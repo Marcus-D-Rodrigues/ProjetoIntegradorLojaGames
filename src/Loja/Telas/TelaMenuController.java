@@ -52,15 +52,48 @@ public class TelaMenuController implements Initializable {
     
 }
     @FXML
-    private void produto(ActionEvent event) {
+    private void produto(ActionEvent event) throws Exception{
+        URL url = getClass().getResource("/Loja/Telas/TelaProduto.fxml");
+        
+        Parent tela = FXMLLoader.load(url);
+        
+        Scene cena = new Scene(tela);
+        
+        Stage stage = new Stage();
+        
+        stage.setScene(cena);
+        
+        stage.show();
     }
 
     @FXML
-    private void venda(ActionEvent event) {
+    private void venda(ActionEvent event) throws Exception{
+        URL url = getClass().getResource("/Loja/Telas/TelaVenda.fxml");
+        
+        Parent tela = FXMLLoader.load(url);
+        
+        Scene cena = new Scene(tela);
+        
+        Stage stage = new Stage();
+        
+        stage.setScene(cena);
+        
+        stage.show();
     }
 
     @FXML
-    private void relatorio(ActionEvent event) {
+    private void relatorio(ActionEvent event) throws Exception{
+        URL url = getClass().getResource("/Loja/Telas/TelaRelatorio.fxml");
+        
+        Parent tela = FXMLLoader.load(url);
+        
+        Scene cena = new Scene(tela);
+        
+        Stage stage = new Stage();
+        
+        stage.setScene(cena);
+        
+        stage.show();
     }
     
 }
