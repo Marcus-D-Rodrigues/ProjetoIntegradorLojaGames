@@ -14,12 +14,12 @@ import java.sql.DriverManager;
  */
 public class ConnectionUtils {
   
-    public static Connection getConnection()throws Exception {
-    
-       return DriverManager.getConnection("jdbc:mysql://localhost:3306/intem_cliente" 
-               + "?useTimezone=true&serverTimezone=UTC", 
-               "root",
-               "123321");
-}
+    public static Connection getConnection() throws Exception {
+        return DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/lojagame"
+                    + "?useTimezone=true&serverTimezone=UTC",
+                "root",
+                "12345");
+    }
 
 }
