@@ -212,7 +212,7 @@ public class TelaProdutoController implements Initializable {
             tfPlataforma.setText(itemProdutoEdita.plataforma);
             tfGeneros.setText(itemProdutoEdita.generos);
             taDescricao.setText(itemProdutoEdita.descricao);
-            tfQuantidade.setText(String.valueOf(itemProdutoEdita.quantidade_produto));
+            tfQuantidade.setText(itemProdutoEdita.quantidade_produto + "");
             tfPreco.setText(itemProdutoEdita.preco + "");
 
             btnSalvar.setText("Salvar");

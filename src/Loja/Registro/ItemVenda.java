@@ -1,7 +1,8 @@
 package Loja.Registro;
 
-public class ItemProduto {
+import java.sql.Date;
 
+public class ItemVenda {
     public int id;
     public String nome_produto;
     public String nome_criador;
@@ -10,6 +11,10 @@ public class ItemProduto {
     public String descricao;
     public int quantidade_produto;
     public float preco;
+    
+
+    public int id_cliente;
+    public Date data_venda;
 
     public String getNome_produto() {
         return nome_produto;
@@ -22,8 +27,5 @@ public class ItemProduto {
     public float getPreco() {
         return preco;
     }
-    
-    public String getDescricao() {
-        return descricao;
-    }
+
 }

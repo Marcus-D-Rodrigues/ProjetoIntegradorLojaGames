@@ -1,38 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane id="AnchorPane" prefHeight="615.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Loja.Telas.TelaVendaController">
    <children>
-      <TextField layoutX="88.0" layoutY="22.0" prefHeight="25.0" prefWidth="424.0" promptText="Nome do produto" />
-      <Button layoutX="269.0" layoutY="56.0" mnemonicParsing="false" text="pesquisa" />
-      <TableView layoutX="30.0" layoutY="100.0" prefHeight="200.0" prefWidth="539.0">
-        <columns>
-          <TableColumn prefWidth="152.0" text="Produtos" />
-            <TableColumn prefWidth="217.0" text="Descrição" />
-          <TableColumn prefWidth="169.0" text="Preço" />
-        </columns>
-      </TableView>
-      <Button layoutX="510.0" layoutY="315.0" mnemonicParsing="false" text="Compra" />
-      <TextField layoutX="423.0" layoutY="315.0" prefHeight="25.0" prefWidth="73.0" promptText="Quantidade" />
-      <Separator layoutY="359.0" prefHeight="0.0" prefWidth="600.0" />
-      <TableView layoutX="30.0" layoutY="385.0" prefHeight="169.0" prefWidth="539.0">
-        <columns>
-          <TableColumn prefWidth="112.0" text="Nome" />
-          <TableColumn prefWidth="126.0" text="CPF" />
-            <TableColumn prefWidth="138.0" text="Produto" />
-            <TableColumn prefWidth="162.0" text="Preço" />
-        </columns>
-      </TableView>
-      <TextField layoutX="30.0" layoutY="315.0" prefHeight="25.0" prefWidth="113.0" promptText="CPF do cliente" />
-      <Button layoutX="30.0" layoutY="570.0" mnemonicParsing="false" text="Excluir" />
-      <TextField layoutX="450.0" layoutY="570.0" prefHeight="25.0" prefWidth="121.0" promptText="valor Total" />
-      <Button layoutX="159.0" layoutY="315.0" mnemonicParsing="false" text="Validar" />
-      <Button layoutX="110.0" layoutY="570.0" mnemonicParsing="false" text="Finaliza compra" />
+      <TitledPane animated="false" layoutX="25.0" layoutY="14.0" prefHeight="272.0" prefWidth="550.0" text="Compras">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="268.0" prefWidth="548.0">
+               <children>
+                  <TextField fx:id="tfPesquisa" layoutX="11.0" layoutY="14.0" prefWidth="420.0" />
+                  <Button layoutX="458.0" layoutY="14.0" mnemonicParsing="false" onAction="#pesquisa" prefHeight="25.0" prefWidth="79.0" text="Pesquisa" />
+                  <TableView fx:id="tabelaProdutos" layoutX="11.0" layoutY="45.0" prefHeight="160.0" prefWidth="526.0">
+                     <columns>
+                        <TableColumn fx:id="colunaNome" prefWidth="158.0" text="Produtos" />
+                        <TableColumn fx:id="colunaDescricao" prefWidth="191.0" text="Descrição" />
+                        <TableColumn fx:id="colunaPreco" prefWidth="176.0" text="Preço" />
+                     </columns>
+                  </TableView>
+                  <Button layoutX="418.0" layoutY="213.0" mnemonicParsing="false" onAction="#acaoSacola" text="Adicionar na sacola" />
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+      <TitledPane animated="false" layoutX="25.0" layoutY="300.0" prefHeight="237.0" prefWidth="550.0" text="Sacola">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="207.0" prefWidth="548.0">
+               <children>
+                  <TableView fx:id="tabelaSacola" layoutX="11.0" layoutY="14.0" prefHeight="160.0" prefWidth="526.0">
+                     <columns>
+                        <TableColumn fx:id="colunaProdutoVenda" prefWidth="266.0" text="Produto" />
+                        <TableColumn fx:id="colunaPrecoVenda" prefWidth="131.0" text="Preço" />
+                        <TableColumn fx:id="colunaQtdVenda" prefWidth="128.0" text="Quantidade" />
+                     </columns>
+                  </TableView>
+                  <Button layoutX="425.0" layoutY="179.0" mnemonicParsing="false" text="Limpar" />
+                  <Button layoutX="487.0" layoutY="179.0" mnemonicParsing="false" text="Excluir" />
+                  <TextField fx:id="tfValorTotal" layoutX="11.0" layoutY="179.0" prefHeight="25.0" prefWidth="113.0" promptText="valor Total" />
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+      <TextField fx:id="tfCliente" layoutX="25.0" layoutY="558.0" promptText="Cliente" />
+      <Button layoutX="180.0" layoutY="558.0" mnemonicParsing="false" onAction="#validar" text="Validar" />
+      <Button layoutX="476.0" layoutY="558.0" mnemonicParsing="false" onAction="#finalizarCompra" text="Finaliza compra" />
    </children>
 </AnchorPane>

@@ -5,6 +5,10 @@
  */
 package Loja.Registro;
 
+import java.sql.Date;
+
+
+
 /**
  *
  * @author Dell i5
@@ -25,12 +29,16 @@ public class ItemCliente {
     public String telefone;
     public String celular;
     public String email;
+    public Character genero;
+    public Character estado_civil;
+    public Date data_nascimento;
 
     public String getNome() {
         return nome;
     }
 
-    public String getTelefone() {
+
+    public String getCpf() {
         return cpf;
     }
 

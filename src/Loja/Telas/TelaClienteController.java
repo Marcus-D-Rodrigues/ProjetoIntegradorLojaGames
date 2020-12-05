@@ -8,7 +8,8 @@ package Loja.Telas;
 import Loja.BancoDados.ItemClienteDAO;
 import Loja.Registro.ItemCliente;
 import java.net.URL;
-import java.util.ArrayList;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -39,6 +40,8 @@ public class TelaClienteController implements Initializable {
     private TextField tfSobrenome;
     @FXML
     private DatePicker dataNascimento;
+    @FXML
+    private LocalDate dataEscolhida;
     @FXML
     private TextField tfRg;
     @FXML
@@ -75,36 +78,37 @@ public class TelaClienteController implements Initializable {
     private TableColumn<ItemCliente, String> colunaNome;
     @FXML
     private TableColumn<ItemCliente, String> colunaCpf;
-    
-    boolean editMode = false;
-    List<ItemCliente> listaCliente = new ArrayList<>();
-    ItemCliente itemClienteEdicao = null;
-    
 
-    /**
-     * Initializes the controller class.
-     */
+    boolean editMode = false;
+    ItemCliente itemClienteEdicao = null;
+
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        colunaNome.setCellValueFactory(new PropertyValueFactory("nome" + "sobrenome"));
+        colunaNome.setCellValueFactory(new PropertyValueFactory("nome"));
         colunaCpf.setCellValueFactory(new PropertyValueFactory("cpf"));
-        
+
         comboGenero.getItems().add("Masculino");
         comboGenero.getItems().add("Feminino");
-        comboGenero.getItems().add("outro");
-        
+
         comboEstadoCivil.getItems().add("Casado");
         comboEstadoCivil.getItems().add("Solteiro");
-        comboEstadoCivil.getItems().add("outro");
-    }    
+
+    }
 
     @FXML
     private void salvar(ActionEvent event) {
-        if (!editMode) {
+
+        if ("".equals(tfNome.getText()) || "".equals(tfCpf.getText())) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Infomações");
+            alert.setHeaderText("Preencha todos os campos");
+            alert.showAndWait();
+        } else if (!editMode) {
             ItemCliente item = new ItemCliente();
 
             item.nome = tfNome.getText();
-            item.sobrenome= tfSobrenome.getText();
+            item.sobrenome = tfSobrenome.getText();
             item.rg = tfRg.getText();
             item.cpf = tfCpf.getText();
             item.cep = tfCep.getText();
@@ -112,9 +116,15 @@ public class TelaClienteController implements Initializable {
             item.bairro = tfBairro.getText();
             item.complemento = tfComplemento.getText();
             item.endereco = tfEndereco.getText();
-            item.telefone= tfTelefone.getText();
+            item.numero = tfNumero.getText();
+            item.telefone = tfTelefone.getText();
             item.celular = tfCelular.getText();
             item.email = tfEmail.getText();
+            item.genero = comboGenero.getValue().charAt(0);
+            item.estado_civil = comboEstadoCivil.getValue().charAt(0);
+            item.data_nascimento = Date.valueOf(dataNascimento.getValue());
+
+
 
             try {
                 ItemClienteDAO.inserir(item);
@@ -131,6 +141,7 @@ public class TelaClienteController implements Initializable {
             itemClienteEdicao.rg = tfRg.getText();
             itemClienteEdicao.cpf = tfCpf.getText();
             itemClienteEdicao.cep = tfCep.getText();
+            itemClienteEdicao.cidade = tfCidade.getText();
             itemClienteEdicao.bairro = tfBairro.getText();
             itemClienteEdicao.complemento = tfComplemento.getText();
             itemClienteEdicao.endereco = tfEndereco.getText();
@@ -138,21 +149,23 @@ public class TelaClienteController implements Initializable {
             itemClienteEdicao.telefone = tfTelefone.getText();
             itemClienteEdicao.celular = tfCelular.getText();
             itemClienteEdicao.email = tfEmail.getText();
+            itemClienteEdicao.genero = comboGenero.getValue().charAt(0);
+            itemClienteEdicao.estado_civil = comboEstadoCivil.getValue().charAt(0);
+            itemClienteEdicao.data_nascimento = Date.valueOf(dataNascimento.getValue());
 
-            for (int i = 0; i < listaCliente.size(); i++) {
-                ItemCliente itemLista = listaCliente.get(i);
-                if (itemLista.id == itemClienteEdicao.id) {
-                    listaCliente.set(i, itemClienteEdicao);
-                    break;
-                }
+            try {
+                ItemClienteDAO.editar(itemClienteEdicao);
+                alert("Editado", "Cliente editado", Alert.AlertType.INFORMATION);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                alert("Erro", "Falha ao salvar", Alert.AlertType.ERROR);
             }
-
-            alert("Editado", "Cliente editado", Alert.AlertType.INFORMATION);
 
         }
 
-        limpar(event);
         pesquisar(event);
+        limpar(event);
     }
 
     @FXML
@@ -188,25 +201,29 @@ public class TelaClienteController implements Initializable {
             } catch (Exception e) {
                 e.printStackTrace();
 
-                alert("Erro", "Falha ao salvar", Alert.AlertType.INFORMATION);
-    }
-        }else {
-            List<ItemCliente> listaResultado = new ArrayList<>();
-
-            for (int i = 0; i < listaCliente.size(); i++) {
-                ItemCliente itemLista = listaCliente.get(i);
-                if (itemLista.nome.contains(tfPesquisar.getText())) {
-                    listaResultado.add(itemLista);
-                }
+                alert("Erro", "Falha ao pesquisar", Alert.AlertType.INFORMATION);
             }
-            tabela.setItems(FXCollections.observableArrayList(listaCliente));
-            tabela.refresh();
+        } else {
+            try {
+                List<ItemCliente> resultados = ItemClienteDAO.pesquisar(tfPesquisar.getText());
+
+                tabela.setItems(FXCollections.observableArrayList(resultados));
+                tabela.refresh();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                alert("Erro", "Falha ao pesquisar", Alert.AlertType.ERROR);
+
+            }
+
         }
+
     }
 
     @FXML
     private void excluir(ActionEvent event) {
-         ItemCliente itensSelecionados = tabela.getSelectionModel().getSelectedItem();
+        ItemCliente itensSelecionados = tabela.getSelectionModel().getSelectedItem();
 
         if (itensSelecionados != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -216,12 +233,13 @@ public class TelaClienteController implements Initializable {
             Optional<ButtonType> resultado = alert.showAndWait();
 
             if (resultado.get() == ButtonType.OK) {
-                for (int i = 0; i < listaCliente.size(); i++) {
-                    ItemCliente itemLista = listaCliente.get(i);
-                    if (itemLista.id == itensSelecionados.id) {
-                        listaCliente.remove(i);
-                        break;
-                    }
+                try {
+                    ItemClienteDAO.excluir(itensSelecionados.id);
+                    alert("Excluído", "Cliente excluído", Alert.AlertType.INFORMATION);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    alert("Erro", "Falha ao excluir", Alert.AlertType.ERROR);
                 }
             }
 
@@ -248,21 +266,42 @@ public class TelaClienteController implements Initializable {
             tfBairro.setText(itemClienteEdicao.bairro);
             tfComplemento.setText(itemClienteEdicao.complemento);
             tfEndereco.setText(itemClienteEdicao.endereco);
-            tfNumero.setText(itemClienteEdicao.numero);           
+            tfNumero.setText(itemClienteEdicao.numero);
             tfTelefone.setText(itemClienteEdicao.telefone);
             tfCelular.setText(itemClienteEdicao.celular);
             tfEmail.setText(itemClienteEdicao.email);
+
+            if (itemClienteEdicao.data_nascimento != null) {
+                dataNascimento.setValue(itemClienteEdicao.data_nascimento.toLocalDate());
+            }
+            Character genero = itemClienteEdicao.genero;
+
+            if (genero.equals('M')) {
+                comboGenero.getSelectionModel().select("Masculino");
+            } else {
+                comboGenero.getSelectionModel().select("Feminino");
+            }
+
+            Character estadoCivil = itemClienteEdicao.estado_civil;
+
+            if (estadoCivil.equals('S')) {
+                comboEstadoCivil.getSelectionModel().select("Solteiro");
+
+            } else {
+                comboEstadoCivil.getSelectionModel().select("Casado");
+
+            }
 
             btnSalvar.setText("Salvar");
 
         }
     }
-    
+
     void alert(String title, String msg, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setContentText(msg);
         alert.showAndWait();
     }
-    
+
 }
