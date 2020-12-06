@@ -13,9 +13,6 @@ public class ItemVenda {
     public float preco;
     
 
-    public int id_cliente;
-    public Date data_venda;
-
     public String getNome_produto() {
         return nome_produto;
     }

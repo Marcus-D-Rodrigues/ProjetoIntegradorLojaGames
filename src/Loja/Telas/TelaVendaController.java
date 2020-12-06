@@ -9,6 +9,7 @@ import Loja.BancoDados.ItemClienteDAO;
 import Loja.BancoDados.ItemProdutoDAO;
 import Loja.BancoDados.ItemVendaDAO;
 import Loja.Registro.ItemCliente;
+import Loja.Registro.ItemCompra;
 import Loja.Registro.ItemProduto;
 import Loja.Registro.ItemVenda;
 import java.net.URL;
@@ -57,9 +58,10 @@ public class TelaVendaController implements Initializable {
     private TextField tfValorTotal;
 
     List<ItemVenda> listaDeVenda = new ArrayList<>();
-    int totalItens = 1;
-
+    
     int IdCliente;
+    int IdVenda;
+    int IdProduto;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -138,12 +140,28 @@ public class TelaVendaController implements Initializable {
         }
 
     }
+    
     @FXML
     private void finalizarCompra(ActionEvent event) throws Exception {
-
+        ItemCompra item = new ItemCompra();
         
+        item.id_cliente = IdCliente;
+        item.data_venda = Date.valueOf("2020-12-05");
+        
+        ItemVendaDAO.pedidoDeVenda(item);
+        IdVenda = item.id;
+        
+        
+        ItemCompra item2 = new ItemCompra();
+        
+        item2.id_produto = IdProduto;
+        item2.id_venda = IdVenda;
+        item2.qtd_produto = 1;
+        item2.valor_total = 200;
+        
+        ItemVendaDAO.finaliza(item2);
+
     }
-   
     
     
     void alert(String title, String msg, Alert.AlertType type) {
