@@ -19,7 +19,7 @@ public class ConnectionUtils {
                 "jdbc:mysql://localhost:3306/lojagame"
                     + "?useTimezone=true&serverTimezone=UTC",
                 "root",
-                "12345");
+                "123321");
     }
 
 }

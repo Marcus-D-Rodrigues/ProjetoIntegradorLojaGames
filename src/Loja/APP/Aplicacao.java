@@ -1,6 +1,7 @@
 
 package Loja.APP;
 
+import Loja.BancoDados.ConnectionUtils;
 import java.io.IOException;
 import java.net.URL;
 import javafx.application.Application;
@@ -10,7 +11,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Aplicacao extends Application {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         launch(args);
     }
     

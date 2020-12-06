@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="408.0" prefWidth="678.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="Loja.Telas.TelaRelatorioController">
+<AnchorPane id="AnchorPane" prefHeight="523.0" prefWidth="693.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Loja.Telas.TelaRelatorioController">
    <children>
-      <TextField layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="209.0" promptText="Nome cliente" />
-      <TextField layoutX="263.0" layoutY="14.0" prefHeight="25.0" prefWidth="188.0" promptText="CPF" />
-      <TextField layoutX="263.0" layoutY="55.0" prefHeight="25.0" prefWidth="188.0" promptText="produto" />
-      <TextField layoutX="476.0" layoutY="14.0" prefHeight="25.0" prefWidth="188.0" promptText="Data da compra" />
-      <TextField layoutX="476.0" layoutY="55.0" prefHeight="25.0" prefWidth="188.0" promptText="preço" />
-      <Separator layoutY="136.0" prefHeight="0.0" prefWidth="678.0" />
-      <Button layoutX="549.0" layoutY="94.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="115.0" text="Pesquisa" />
-      <TableView layoutX="14.0" layoutY="154.0" prefHeight="200.0" prefWidth="647.0">
-        <columns>
-          <TableColumn minWidth="0.0" prefWidth="52.0" text="Pedido" />
-            <TableColumn prefWidth="149.0" text="Nome" />
-            <TableColumn prefWidth="102.0" text="CPF" />
-            <TableColumn minWidth="0.0" prefWidth="149.0" text="Produto" />
-            <TableColumn minWidth="0.0" prefWidth="88.0" text="preço" />
-            <TableColumn minWidth="0.0" prefWidth="106.0" text="data" />
-        </columns>
-      </TableView>
-      <TextField layoutX="14.0" layoutY="55.0" prefHeight="25.0" prefWidth="209.0" promptText="Pedido" />
-      <Button layoutX="419.0" layoutY="94.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="115.0" text="Limpar" />
+      <TitledPane animated="false" layoutX="14.0" layoutY="29.0" prefHeight="476.0" prefWidth="666.0" text="untitled">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="448.0" prefWidth="664.0">
+               <children>
+                  <TextField fx:id="tfPesquisar" layoutX="355.0" layoutY="392.0" prefHeight="25.0" prefWidth="198.0" promptText="Pesquisar" />
+                  <Button layoutX="570.0" layoutY="392.0" mnemonicParsing="false" onAction="#pesquisar" prefHeight="25.0" prefWidth="73.0" text="Pesquisar" />
+                  <Separator layoutX="-1.0" layoutY="373.0" prefHeight="1.0" prefWidth="666.0" />
+                  <TableView fx:id="tabela" layoutX="9.0" layoutY="47.0" prefHeight="279.0" prefWidth="646.0">
+                    <columns>
+                      <TableColumn fx:id="colunaCliente" prefWidth="179.0" text="Cliente" />
+                      <TableColumn fx:id="colunaProduto" prefWidth="184.0" text="Produto" />
+                        <TableColumn fx:id="colunaQuantidade" prefWidth="164.0" text="Quantidade" />
+                        <TableColumn fx:id="colunaValor" prefWidth="118.0" text="Valor" />
+                    </columns>
+                  </TableView>
+                  <TextField fx:id="periodo" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="241.0" promptText="Periodo: Data Inicial - Data Final" />
+                  <TextField fx:id="total" layoutX="14.0" layoutY="336.0" promptText="Total" />
+                  <DatePicker fx:id="dataInicial" layoutX="2.0" layoutY="392.0" prefHeight="25.0" prefWidth="156.0" promptText="Data Inicial" />
+                  <DatePicker fx:id="dataFinal" layoutX="168.0" layoutY="392.0" promptText="Data Final" />
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
    </children>
 </AnchorPane>
