@@ -5,31 +5,44 @@
  */
 package Loja.BancoDados;
 
-import Loja.Registro.ItemCompra;
+import Loja.Registro.ItemVenda;
+import Loja.Registro.Venda;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.List;
 
 
 public class ItemVendaDAO {
-    public static void pedidoDeVenda(ItemCompra item) throws Exception {
+    public static void finalizarCompra(Venda venda, List<ItemVenda> listaDeVenda) throws Exception {
 
-        String sql = "INSERT INTO venda(id_cliente, data_venda) VALUES( ?, ?);";
+        String sqlVenda = "INSERT INTO venda(id_cliente, data_venda) VALUES( ?, ?);";
 
         Connection conexao = ConnectionUtils.getConnection();
+        
 
         try {
-            PreparedStatement comando = conexao.prepareStatement(sql);
+            PreparedStatement comando = conexao.prepareStatement(sqlVenda, Statement.RETURN_GENERATED_KEYS);
+            
+            comando.setInt(1, venda.id_cliente);
+            comando.setDate(2, venda.data_venda);
 
-            comando.setInt(1, item.id_cliente);
-            comando.setDate(2, item.data_venda);
-
-            comando.execute();
+            comando.executeUpdate();
+            
+            ResultSet result = comando.getGeneratedKeys();
+               
+            if(result.next()){
+                int id_venda = result.getInt(1);
+                finaliza(id_venda, listaDeVenda);
+            }
+            
         } finally {
             conexao.close();
         }
     }
     
-    public static void finaliza(ItemCompra item2) throws Exception {
+    public static void finaliza(int id_venda, List<ItemVenda> listaDeVenda) throws Exception {
 
         String sql = "INSERT INTO item_venda(id_produto, id_venda, qtd_produto, valor_total) VALUES(?,?,?,?);";
 
@@ -37,13 +50,15 @@ public class ItemVendaDAO {
 
         try {
             PreparedStatement comando = conexao.prepareStatement(sql);
-
-            comando.setInt(1, item2.id_produto);
-            comando.setInt(2, item2.id_venda);
-            comando.setInt(2, item2.qtd_produto);
-            comando.setFloat(2, item2.valor_total);
-
-            comando.execute();
+                
+            for(ItemVenda item : listaDeVenda){
+                comando.setInt(1, item.getId());
+                comando.setInt(2, id_venda);
+                comando.setInt(3, item.getQuantidade_produto());
+                comando.setFloat(4, item.getPreco());
+                comando.execute();
+            }
+            
         } finally {
             conexao.close();
         }

@@ -9,11 +9,12 @@ import Loja.BancoDados.ItemClienteDAO;
 import Loja.BancoDados.ItemProdutoDAO;
 import Loja.BancoDados.ItemVendaDAO;
 import Loja.Registro.ItemCliente;
-import Loja.Registro.ItemCompra;
 import Loja.Registro.ItemProduto;
 import Loja.Registro.ItemVenda;
+import Loja.Registro.Venda;
 import java.net.URL;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -54,14 +55,11 @@ public class TelaVendaController implements Initializable {
     private TableColumn<ItemVenda, Float> colunaQtdVenda;
     @FXML
     private TextField tfCliente;
-    @FXML
-    private TextField tfValorTotal;
 
     List<ItemVenda> listaDeVenda = new ArrayList<>();
     
+//    float valorTotal = 0;
     int IdCliente;
-    int IdVenda;
-    int IdProduto;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -106,11 +104,14 @@ public class TelaVendaController implements Initializable {
     }
 
     @FXML
-    private void acaoSacola(ActionEvent event){
+     private void acaoSacola(ActionEvent event){
         ItemVenda item = new ItemVenda();
+        item.id = tabelaProdutos.getSelectionModel().getSelectedItem().getId();
         item.nome_produto = tabelaProdutos.getSelectionModel().getSelectedItem().getNome_produto();
         item.preco = tabelaProdutos.getSelectionModel().getSelectedItem().getPreco();
         item.quantidade_produto = 1;
+        item.valor_total = tabelaProdutos.getSelectionModel().getSelectedItem().getPreco();
+//        valorTotal += tabelaProdutos.getSelectionModel().getSelectedItem().getPreco();
         listaDeVenda.add(item);
         tabelaSacola.setItems(FXCollections.observableArrayList(listaDeVenda));
         
@@ -143,24 +144,38 @@ public class TelaVendaController implements Initializable {
     
     @FXML
     private void finalizarCompra(ActionEvent event) throws Exception {
-        ItemCompra item = new ItemCompra();
+        Venda venda = new Venda();
+        LocalDate localDate = LocalDate.now();
         
-        item.id_cliente = IdCliente;
-        item.data_venda = Date.valueOf("2020-12-05");
+        venda.id_cliente = IdCliente;
+        venda.data_venda = Date.valueOf(localDate);
         
-        ItemVendaDAO.pedidoDeVenda(item);
-        IdVenda = item.id;
+        ItemVendaDAO.finalizarCompra(venda, listaDeVenda);
+        alert("Finalizando", "Compra efetuada", Alert.AlertType.CONFIRMATION);
         
-        
-        ItemCompra item2 = new ItemCompra();
-        
-        item2.id_produto = IdProduto;
-        item2.id_venda = IdVenda;
-        item2.qtd_produto = 1;
-        item2.valor_total = 200;
-        
-        ItemVendaDAO.finaliza(item2);
+        limpar(event);
+    }
+    
+    @FXML
+    private void limpar(ActionEvent event) {
+        while (listaDeVenda.size() > 0) {
+            listaDeVenda.remove(0);
+        }
+        tabelaSacola.setItems(FXCollections.observableArrayList(listaDeVenda));
+    }
 
+    @FXML
+    private void excluir(ActionEvent event) {
+        ItemVenda itemSelecionado = tabelaSacola.getSelectionModel().getSelectedItem();
+
+        for ( int i = 0; i < listaDeVenda.size(); i++) {
+            ItemVenda itemLista = listaDeVenda.get(i);
+            if (itemLista.id == itemSelecionado.id) {
+                listaDeVenda.remove(i);
+                break;
+            }
+        }
+        tabelaSacola.setItems(FXCollections.observableArrayList(listaDeVenda));
     }
     
     
@@ -170,6 +185,8 @@ public class TelaVendaController implements Initializable {
         alert.setContentText(msg);
         alert.showAndWait();
     }
+
+
 
 
     

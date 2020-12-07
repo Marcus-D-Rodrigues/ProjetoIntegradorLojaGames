@@ -11,13 +11,8 @@ import java.sql.Date;
  *
  * @author nilso
  */
-public class ItemCompra {
+public class Venda {
     public int id;
     public int id_cliente;
     public Date data_venda;
-    
-    public int id_produto;
-    public int id_venda;
-    public int qtd_produto;
-    public float valor_total;
 }

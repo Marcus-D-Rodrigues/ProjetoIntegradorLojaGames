@@ -38,9 +38,8 @@
                         <TableColumn fx:id="colunaQtdVenda" prefWidth="128.0" text="Quantidade" />
                      </columns>
                   </TableView>
-                  <Button layoutX="425.0" layoutY="179.0" mnemonicParsing="false" text="Limpar" />
-                  <Button layoutX="487.0" layoutY="179.0" mnemonicParsing="false" text="Excluir" />
-                  <TextField fx:id="tfValorTotal" layoutX="11.0" layoutY="179.0" prefHeight="25.0" prefWidth="113.0" promptText="valor Total" />
+                  <Button layoutX="425.0" layoutY="179.0" mnemonicParsing="false" onAction="#limpar" text="Limpar" />
+                  <Button layoutX="487.0" layoutY="179.0" mnemonicParsing="false" onAction="#excluir" text="Excluir" />
                </children>
             </AnchorPane>
         </content>
